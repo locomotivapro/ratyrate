@@ -37,7 +37,7 @@ module Ratyrate
       a.save!(validate: false)
     end
   end
-  
+
   def update_rate_average(stars, dimension=nil)
     if average(dimension).nil?
       send("create_#{average_assoc_name(dimension)}!", { avg: stars, qty: 1, dimension: dimension })
@@ -50,9 +50,14 @@ module Ratyrate
   end
 
   def update_current_rate(stars, user, dimension)
-    current_rate = rates.where(rater_id: user.id, dimension: dimension).take
+    current_rate = rates(dimension).where(rater_id: user.id, dimension: dimension).take
+
     current_rate.stars = stars
-    current_rate.save!(validate: false)
+    if stars <= 0.0
+      current_rate.destroy
+    else
+      current_rate.save!(validate: false)
+    end
 
     if rates(dimension).count > 1
       update_rate_average(stars, dimension)
@@ -66,14 +71,14 @@ module Ratyrate
   def overall_avg(user)
     # avg = OverallAverage.where(rateable_id: self.id)
     # #FIXME: Fix the bug when the movie has no ratings
-    # unless avg.empty? 
+    # unless avg.empty?
     #   return avg.take.avg unless avg.take.avg == 0
     # else # calculate average, and save it
     #   dimensions_count = overall_score = 0
     #   user.ratings_given.select('DISTINCT dimension').each do |d|
     #     dimensions_count = dimensions_count + 1
     #     unless average(d.dimension).nil?
-    #       overall_score = overall_score + average(d.dimension).avg 
+    #       overall_score = overall_score + average(d.dimension).avg
     #     end
     #   end
     #   overall_avg = (overall_score / dimensions_count).to_f.round(1)
@@ -85,7 +90,7 @@ module Ratyrate
     #   overall_avg
     # end
   end
-  
+
   # calculate the movie overall average rating for all users
   def calculate_overall_average
   end
@@ -99,7 +104,7 @@ module Ratyrate
   end
 
   def can_rate?(user, dimension=nil)
-    rates.where(rater_id: user.id, dimension: dimension).size.zero?
+    rates(dimension).where(rater_id: user.id, dimension: dimension).size.zero?
   end
 
   def rates(dimension=nil)
