@@ -1,22 +1,21 @@
-# -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "ratyrate/version"
 
 Gem::Specification.new do |s|
   s.name        = "ratyrate"
   s.version     = Ratyrate::VERSION
-  s.authors     = ["Islam Wazery"]
+  s.authors     = ["Islam Wazery", "Isabela Tonon"]
   s.email       = ["wazery@ubuntu.com"]
   s.homepage    = "http://github.com/wazery/ratyrate"
   s.summary     = %q{A Ruby Gem that wraps the functionality of jQuery Raty library, and adds IMDB style rating.}
   s.description = %q{A Ruby Gem that wraps the functionality of jQuery Raty library, and adds IMDB style rating.}
 
-  s.rubyforge_project = "ratyrate"
+  # s.rubyforge_project = "ratyrate"
 
-  s.files         = `git ls-files`.split("\n")
+  s.files         = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  # s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  # s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
