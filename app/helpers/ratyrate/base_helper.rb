@@ -8,7 +8,7 @@ module Ratyrate
       star         = options[:star]         || 5
       enable_half  = options[:enable_half]  || false
       half_show    = options[:half_show]    || false
-      star_path    = options[:star_path]    || "/assets"
+      star_path    = options[:star_path]    || "/ratyrate"
       star_on      = options[:star_on]      || "star-on.png"
       star_off     = options[:star_off]     || "star-off.png"
       star_half    = options[:star_half]    || "star-half.png"
@@ -88,7 +88,7 @@ module Ratyrate
       star         = options[:star]         || 5
       enable_half  = options[:enable_half]  || false
       half_show    = options[:half_show]    || false
-      star_path    = options[:star_path]    || "/assets"
+      star_path    = options[:star_path]    || "/ratyrate"
       star_on      = options[:star_on]      || "star-on.png"
       star_off     = options[:star_off]     || "star-off.png"
       star_half    = options[:star_half]    || "star-half.png"
