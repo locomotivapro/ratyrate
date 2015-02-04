@@ -3,13 +3,17 @@ require "ratyrate/engine"
 require "ratyrate/version"
 
 module Ratyrate
-  def rate(stars, user, dimension=nil, dirichlet_method=false)
+  def rate(stars, user, attr_hash, dimension=nil, dirichlet_method=false)
     dimension = nil if dimension.blank?
 
     if can_rate? user, dimension
       rates(dimension).create! do |r|
         r.stars = stars
         r.rater = user
+        r.title = attr_hash[:title]
+        r.body = attr_hash[:body]
+        r.month = attr_hash[:month]
+        r.year = attr_hash[:year]
       end
       if dirichlet_method
         update_rate_average_dirichlet(stars, dimension)
@@ -17,7 +21,7 @@ module Ratyrate
         update_rate_average(stars, dimension)
       end
     else
-      update_current_rate(stars, user, dimension)
+      update_current_rate(stars, user, dimension, attr_hash)
     end
   end
 
@@ -49,14 +53,18 @@ module Ratyrate
     end
   end
 
-  def update_current_rate(stars, user, dimension)
+  def update_current_rate(stars, user, dimension, attr_hash)
     current_rate = rates(dimension).where(rater_id: user.id, dimension: dimension).take
 
     current_rate.stars = stars
+    current_rate.title = attr_hash[:title]
+    current_rate.body = attr_hash[:body]
+    current_rate.month = attr_hash[:month]
+    current_rate.year = attr_hash[:year]
     if stars <= 0.0
       current_rate.destroy
     else
-      current_rate.save!(validate: false)
+      current_rate.save!
     end
 
     if rates(dimension).count > 1
