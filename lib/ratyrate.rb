@@ -7,20 +7,22 @@ module Ratyrate
     dimension = nil if dimension.blank?
 
     if can_rate? user, dimension
-      rates(dimension).create do |r|
-        r.stars = stars
-        r.rater = user
-        r.title = attr_hash[:title]
-        r.body = attr_hash[:body]
-        r.month = attr_hash[:month]
-        r.year = attr_hash[:year]
-        r.state = "pending"
-      end
+      new_rate = rates(dimension).create do |r|
+                   r.stars = stars
+                   r.rater = user
+                   r.title = attr_hash[:title]
+                   r.body = attr_hash[:body]
+                   r.month = attr_hash[:month]
+                   r.year = attr_hash[:year]
+                   r.state = "pending"
+                 end
+
       if dirichlet_method
         update_rate_average_dirichlet(stars, dimension)
       else
         update_rate_average(stars, dimension)
       end
+      new_rate
     else
       update_current_rate(stars, user, dimension, attr_hash)
     end
