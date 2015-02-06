@@ -7,7 +7,7 @@ module Ratyrate
     dimension = nil if dimension.blank?
 
     if can_rate? user, dimension
-      rates(dimension).create! do |r|
+      rates(dimension).create do |r|
         r.stars = stars
         r.rater = user
         r.title = attr_hash[:title]
@@ -50,7 +50,7 @@ module Ratyrate
       a = average(dimension)
       a.qty = rates(dimension).count
       a.avg = rates(dimension).average(:stars)
-      a.save!(validate: false)
+      a.save(validate: false)
     end
   end
 
@@ -65,7 +65,7 @@ module Ratyrate
     if stars <= 0.0
       current_rate.destroy
     else
-      current_rate.save!
+      current_rate.save
     end
 
     if rates(dimension).count > 1
@@ -73,8 +73,9 @@ module Ratyrate
     else # Set the avarage to the exact number of stars
       a = average(dimension)
       a.avg = stars
-      a.save!(validate: false)
+      a.save(validate: false)
     end
+    current_rate
   end
 
   def overall_avg(user)
