@@ -14,6 +14,7 @@ module Ratyrate
         r.body = attr_hash[:body]
         r.month = attr_hash[:month]
         r.year = attr_hash[:year]
+        r.state = "pending"
       end
       if dirichlet_method
         update_rate_average_dirichlet(stars, dimension)
