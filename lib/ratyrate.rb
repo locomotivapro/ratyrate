@@ -16,11 +16,12 @@ module Ratyrate
                    r.year = attr_hash[:year]
                    r.state = "pending"
                  end
-
-      if dirichlet_method
-        update_rate_average_dirichlet(stars, dimension)
-      else
-        update_rate_average(stars, dimension)
+      if new_rate.persisted?
+        if dirichlet_method
+          update_rate_average_dirichlet(stars, dimension)
+        else
+          update_rate_average(stars, dimension)
+        end
       end
       new_rate
     else
