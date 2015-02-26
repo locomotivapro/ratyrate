@@ -109,7 +109,7 @@ module Ratyrate
 
       disable_after_rate = options[:disable_after_rate] || false
 
-      readonly=false
+      readonly= options[:readonly] || false
       if disable_after_rate
         readonly = rating_user.present? ? !rateable_obj.can_rate?(rating_user, dimension) : true
       end
